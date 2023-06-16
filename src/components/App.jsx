@@ -22,7 +22,7 @@ export function App() {
   };
 
   useEffect(() => {
-    if (!searchValue) {
+    if (searchValue === '') {
       return;
     }
 
