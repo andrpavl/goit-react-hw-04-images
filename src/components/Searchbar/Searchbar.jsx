@@ -1,47 +1,43 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import { MdOutlineImageSearch } from 'react-icons/md';
 import css from './Searchbar.module.css';
 import PropTypes from 'prop-types';
 import Notiflix from 'notiflix';
 
-export class Searchbar extends Component {
-  state = { searchValue: '' };
+export function Searchbar({ onSubmit }) {
+  const [searchValue, setSearchValue] = useState('');
 
-  handleChange = evt => {
-    this.setState({
-      searchValue: evt.currentTarget.value.toLowerCase(),
-    });
+  const handleChange = evt => {
+    setSearchValue(evt.currentTarget.value.toLowerCase());
   };
 
-  handleSubmit = evt => {
+  const handleSubmit = evt => {
     evt.preventDefault();
-    if (this.state.searchValue.trim() === '') {
+    if (searchValue.trim() === '') {
       Notiflix.Notify.warning('Ooops! You need to enter something');
       return;
     }
-    this.props.onSubmit(this.state.searchValue);
-    this.setState({ searchValue: '' });
+    onSubmit(searchValue);
+    setSearchValue(searchValue);
   };
 
-  render() {
-    return (
-      <header className={css.searchbar}>
-        <form className={css.searchform} onSubmit={this.handleSubmit}>
-          <button type="submit" className={css.searchBtn}>
-            <MdOutlineImageSearch className={css.buttonLabel} />
-          </button>
+  return (
+    <header className={css.searchbar}>
+      <form className={css.searchform} onSubmit={handleSubmit}>
+        <button type="submit" className={css.searchBtn}>
+          <MdOutlineImageSearch className={css.buttonLabel} />
+        </button>
 
-          <input
-            className={css.SearchFormInput}
-            type="text"
-            placeholder="Search images and photos"
-            onChange={this.handleChange}
-            value={this.state.searchValue}
-          />
-        </form>
-      </header>
-    );
-  }
+        <input
+          className={css.SearchFormInput}
+          type="text"
+          placeholder="Search images and photos"
+          onChange={handleChange}
+          value={searchValue}
+        />
+      </form>
+    </header>
+  );
 }
 
 Searchbar.propTypes = {
